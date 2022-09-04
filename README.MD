@@ -2,7 +2,7 @@
 ## WHAT THIS IS AND HOW TO USE IT:
 A HTML/CSS/JavaScript based random dungeon generator for the Dungeon Fantasy RPG, and for GURPS (particularly the GURPS Dungeon Fantasy product line).
 
-This is intended as an entirely stand-alone and cross-platform application. It does not require web hosting and it does not require installation of a scripting environment or other special software. All you need is to download, unzip, and then open "index.html" in a relatively modern web-browser (I just can't support IE6, sorry).
+This is intended as an entirely stand-alone and cross-platform application. It does not require web hosting and it does not require installation of a scripting environment or other special software. All you need is to download, unzip, and then open ["index.html"](https://maxwilson.github.io/DFRPGRandomDungeonGenerator) in a relatively modern web-browser (I just can't support IE6, sorry).
 
 ## WHAT IT IS FOR:
 The primary intent is twofold:
