@@ -1,32 +1,28 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2020
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.33808.371
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "DFRPGRandomDungeonGenerator-master", ".", "{EBA59C2C-6048-4059-BEDC-519DF109ABD5}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "dungeonMaps", ".", "{EBA59C2C-6048-4059-BEDC-519DF109ABD5}"
 	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.8"
 		Debug.AspNetCompiler.VirtualPath = "/localhost_57343"
-		Debug.AspNetCompiler.PhysicalPath = "..\DFRPGRandomDungeonGenerator-master\"
+		Debug.AspNetCompiler.PhysicalPath = "..\dungeonMaps\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_57343\"
 		Debug.AspNetCompiler.Updateable = "true"
 		Debug.AspNetCompiler.ForceOverwrite = "true"
 		Debug.AspNetCompiler.FixedNames = "false"
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.VirtualPath = "/localhost_57343"
-		Release.AspNetCompiler.PhysicalPath = "..\DFRPGRandomDungeonGenerator-master\"
+		Release.AspNetCompiler.PhysicalPath = "..\dungeonMaps\"
 		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_57343\"
 		Release.AspNetCompiler.Updateable = "true"
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "57343"
-		SlnRelativePath = "..\DFRPGRandomDungeonGenerator-master\"
+		SlnRelativePath = "..\dungeonMaps\"
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenerateTraps", "..\GenerateTraps\GenerateTraps.csproj", "{61455B7B-8500-42A6-8E37-EE24CF2F1069}"
-EndProject
-Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "DelaunatorRooms", "..\DelaunatorRooms\DelaunatorRooms.njsproj", "{FC840C1C-C2ED-4F65-AFCB-BBCEE676189A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,14 +34,6 @@ Global
 		{EBA59C2C-6048-4059-BEDC-519DF109ABD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EBA59C2C-6048-4059-BEDC-519DF109ABD5}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{EBA59C2C-6048-4059-BEDC-519DF109ABD5}.Release|Any CPU.Build.0 = Debug|Any CPU
-		{61455B7B-8500-42A6-8E37-EE24CF2F1069}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{61455B7B-8500-42A6-8E37-EE24CF2F1069}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{61455B7B-8500-42A6-8E37-EE24CF2F1069}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{61455B7B-8500-42A6-8E37-EE24CF2F1069}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FC840C1C-C2ED-4F65-AFCB-BBCEE676189A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FC840C1C-C2ED-4F65-AFCB-BBCEE676189A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FC840C1C-C2ED-4F65-AFCB-BBCEE676189A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FC840C1C-C2ED-4F65-AFCB-BBCEE676189A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
