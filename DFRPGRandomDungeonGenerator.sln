@@ -24,6 +24,8 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "dungeonMaps", ".", "{EBA59C
 		SlnRelativePath = "..\dungeonMaps\"
 	EndProjectSection
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "src", "src\src.fsproj", "{AF843C35-2B4E-4413-809C-481075925DC5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,6 +36,10 @@ Global
 		{EBA59C2C-6048-4059-BEDC-519DF109ABD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EBA59C2C-6048-4059-BEDC-519DF109ABD5}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{EBA59C2C-6048-4059-BEDC-519DF109ABD5}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{AF843C35-2B4E-4413-809C-481075925DC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF843C35-2B4E-4413-809C-481075925DC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF843C35-2B4E-4413-809C-481075925DC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF843C35-2B4E-4413-809C-481075925DC5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

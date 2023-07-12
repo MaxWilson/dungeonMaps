@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "8Kv3I19606WT9epWhMo+GHcksPeRUD7sxort+OKuZ9qASVTm0mBZ3RVwD/FcfMCXdPcYrz/6YsDaZ1H6w4xalw==",
+  "success": true,
+  "projectFilePath": "C:\\code\\dungeonMaps\\src\\src.fsproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\wilso\\.nuget\\packages\\fsharp.core\\7.0.400-beta.23272.3\\fsharp.core.7.0.400-beta.23272.3.nupkg.sha512"
+  ],
+  "logs": []
+}
