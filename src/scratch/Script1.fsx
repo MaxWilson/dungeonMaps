@@ -23,53 +23,94 @@ type Affordance =
 type Room = {
   id: RoomId
   description: string
-  affordances: Affordance list
+  mutable affordances: Affordance list
   }
 type Dungeon =
-  { rooms: Map<RoomId, Room> }
+  { title: string; rooms: Map<RoomId, Room> }
 
 type FrequencyTest = unit -> bool
 let thunk x _ = x
 let thunk1 f x _ = f x
 let r = System.Random()
 let d n size = List.init n (fun _ -> 1 + r.Next size) |> List.sum
+let chooseRandom (lst: _ list) = lst[r.Next lst.Length]
 let freq: int -> FrequencyTest =
   fun percent () -> r.Next 100 < (percent: int)
 let testfreq freqN = freq freqN ()
 List.init 100 (thunk1 freq 60) |> List.sumBy (fun x -> if (x()) then 1 else 0)
-let maybeMimic (ctx: Monster list) (frequency: FrequencyTest) appearance otherwise =
-  if ctx.IsEmpty && frequency() then
+type GeneratorContext = {
+  mutable rooms: Room list
+  roomMonsters: Monster list
+  mutable roomCounter: int
+  }
+  with
+  static member fresh = { rooms = []; roomMonsters = []; roomCounter = 0 }
+let connectRoom (origin: RoomId) (dest: Room option) doorTo : RoomId =
+  match dest with
+  | Some rm ->
+    let before, after = rm.affordances |> List.partition (function ObviousMonster _ -> false | _ -> true)
+    rm.affordances <- before@[doorTo origin]@after
+    rm.id
+  | _ ->
+    "Outside"
+let maybeMimic (ctx) (frequency: FrequencyTest) appearance otherwise =
+  if ctx.roomMonsters.IsEmpty && frequency() then
     Drilldown(appearance, RevealMonster ("mimic", None)) // mimics don't sneak into occupied lairs!
   else
     Drilldown(appearance, otherwise())
-let dagger ctx = maybeMimic ctx (freq 50) "Pile of treasure" (fun _ -> RevealTreasure { value = 20<dollar>; weight=0.25<lb>; description = "A steel dagger"})
+let dagger ctx = maybeMimic ctx (freq 10) "Pile of treasure" (fun _ -> RevealTreasure { value = 20<dollar>; weight=0.25<lb>; description = "A steel dagger"})
 let chair ctx = maybeMimic ctx (freq 50) "Wooden chair" (fun _ -> RevealTreasure { value = 4<dollar>; weight=10.<lb>; description = "An old wooden chair"})
-let pileOfRocks ctx = maybeMimic ctx (freq 50) "Pile of rocks" (fun _ -> RedHerring)
-let trollHole _ =
+let pileOfRocks ctx = maybeMimic ctx (freq 30) "Pile of rocks" (fun _ -> RedHerring)
+let trollHole ctx =
   let trolls = if testfreq 20 then List.init (d 2 6) (thunk (Monster ("troll", None))) else []
-  { id = $"Troll Hole {System.Guid.NewGuid().ToString()}"
-    description = if trolls.IsEmpty then "Empty troll hole" else $"Occupied troll hole ({trolls.Length})"
+  let trollmeal() =
+    [
+    "a half-eaten child"
+    "the discarded hindquarters of a dog"
+    "a chewed pig's head"
+    "disgusting slop in a bucket"
+    ] |> chooseRandom
+  ctx.roomCounter <- ctx.roomCounter + 1
+  let exitRoom =
+    match ctx.rooms with
+    | [] -> None
+    | rooms -> rooms |> chooseRandom |> Some // connect to an existing room
+  let thisRoomId = $"Troll Hole #{ctx.roomCounter}"
+  let doorTo roomId =
+    Exit {
+      destinationRoom = roomId
+      closed = false; locked = false; trapped = false
+      }
+  { id = thisRoomId
+    description = if trolls.IsEmpty then "Filthy straw scattered everywhere and the stink of troll." else $"Filthy straw, {trollmeal()}, and {trolls.Length} trolls!"
     affordances = [
-      Exit { destinationRoom = "Outside"; closed = false; locked = false; trapped = false }
+      doorTo (connectRoom thisRoomId exitRoom doorTo)
       for t in trolls do
         ObviousMonster t
       for rm in [dagger; chair; pileOfRocks] do
-        if testfreq 60 then Affordance(rm trolls)
+        if testfreq 60 then Affordance(rm { ctx with roomMonsters = trolls })
       ]
     }
+let capitalize (s:string) =
+  if s.Length < 2 then s.ToUpperInvariant()
+  else System.Char.ToUpperInvariant(s[0]).ToString() + s.Substring(1)
+let capitalizeWords (s:string) =
+  s.Split(' ') |> Array.map capitalize |> String.concat " "
 let describeMonster (m: Monster) n =
   let (name, pluralName) = m
   if n = 1 then
     $"A {name}"
   else
+    let pluralName = defaultArg pluralName (name + "s")
     $"{n} {pluralName}"
 let describe (rm: Room) =
   let monsters = rm.affordances
                   |> List.choose (function ObviousMonster m -> Some m | _ -> None) |> List.groupBy id
                   |> List.map (fun (name, lst) -> (name : PluralizableName), lst.Length) |> List.sortBy fst
-  printfn $"{rm.description}"
+  printfn $"{rm.id}:"
+  printfn $"  {rm.description}"
   for m, n in monsters do
-    printfn $"{describeMonster m n}"
+    printfn $"  {describeMonster m n}"
   for item in rm.affordances do
     match item with
     | Exit e ->
@@ -79,22 +120,39 @@ let describe (rm: Room) =
         if e.trapped then "trapped"
         ]
       let flags = if flags.IsEmpty then "" else $"""({flags |> String.concat ", "})"""
-      printfn $"Exit to {e.destinationRoom} {flags}"
+      printfn $"  Exit to {e.destinationRoom} {flags}"
     | ObviousMonster _ -> ()
     | Affordance a ->
+      let bullet = "|" // wish we could use ▶ but at least on console that character might not exist
       let rec recur prefix a =
         match a with
         | Drilldown(txt, rest) ->
-          recur (prefix + $"{txt} ▶ ") rest
+          recur (prefix + $"{txt} {bullet} ") rest
         | RedHerring ->
           printfn $"{prefix}Nothing of interest"
         | RevealMonster m ->
-          printfn $"{prefix}{describeMonster m 1}!"
+          printfn $"{prefix}{describeMonster m 1} attack!"
         | RevealTreasure t ->
           printfn $"{prefix}{t.description} ({t.weight} lb., ${t.value})"
         | Reveals rests ->
           rests |> List.iter (recur prefix)
         | Skillgate(gate, skill, rest) ->
-          recur (prefix + $"{skill} {gate} ▶ ") rest
-      recur "" a
-trollHole() |> describe
+          recur (prefix + $"{skill} {gate} {bullet} ") rest
+      recur "  " a
+  printfn ""
+let describeAll (dungeon: Dungeon) =
+  printfn "%s" dungeon.title
+  for r in dungeon.rooms.Values do
+    describe r
+
+let roomsGen() =
+  let ctx = GeneratorContext.fresh
+  for _ in [1.. d 1 6] do
+    let rm = trollHole ctx
+    ctx.rooms <- rm::ctx.rooms
+  ctx.rooms
+let dunGen() =
+  { title = "Land of Trolls"
+    rooms = let rs = roomsGen() in rs |> List.map(fun r -> r.id, r) |> Map.ofList
+  }
+dunGen() |> describeAll
